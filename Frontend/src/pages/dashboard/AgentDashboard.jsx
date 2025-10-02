@@ -3,6 +3,8 @@ import DashboardLayout from '../../layouts/DashboardLayout';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
+import { useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext'; 
 
 // Mock data for the Agent - replace with real data later
 const agentStats = [
@@ -22,10 +24,12 @@ const assignedDonations = [
 ];
 
 const AgentDashboard = () => {
+
+  const { user } = useContext(AuthContext);
   return (
     <DashboardLayout>
       <div className="space-y-8">
-        <h1 className="text-3xl font-bold">Welcome, Yash!</h1>
+        <h1 className="text-3xl font-bold">Welcome, {user ? user.fullName : 'Agent'}!</h1>
         
         {/* Stat Cards */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">

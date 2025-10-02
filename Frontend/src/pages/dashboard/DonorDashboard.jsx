@@ -1,8 +1,9 @@
 import React from 'react';
+import { useContext } from 'react';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-
+import { AuthContext } from '@/context/AuthContext';
 // Mock data - replace with real data later
 const stats = [
   { title: 'Donations by You', value: 1, color: 'bg-green-500' },
@@ -15,11 +16,13 @@ const recentDonations = [
   { id: 'DON001', items: 'Cooked Rice, Dal', status: 'Pending', date: '2025-09-28' },
 ];
 
+
 const DonorDashboard = () => {
+  const { user } = useContext(AuthContext);
   return (
     <DashboardLayout>
       <div className="space-y-8">
-        <h1 className="text-3xl font-bold">Welcome, Yogesh!</h1>
+        <h1 className="text-3xl font-bold">Welcome, {user ? user.fullName : 'Donor'}!</h1>
 
         {/* Stat Cards */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
