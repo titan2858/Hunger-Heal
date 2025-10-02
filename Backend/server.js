@@ -3,6 +3,8 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const connectDB = require('./config/db') // We will create this file next
 const authRoutes = require('./routes/authRoutes');
+const donationRoutes = require('./routes/donationRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 // Load env vars
 dotenv.config();                                
@@ -14,11 +16,12 @@ const app = express();
 
 // Middlewares
 app.use(cors());
-app.use(express.json()); // To accept JSON data in the body
+app.use(express.json());   // To accept JSON data in the body
+app.use('/api/users', userRoutes); 
 
 // Routes
 app.use('/api/auth', authRoutes);
-
+app.use('/api/donations', donationRoutes); 
 app.get('/', (req, res) => {
   res.send('API is running...');
 });
