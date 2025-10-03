@@ -21,9 +21,9 @@ exports.createDonation = async (req, res) => {
 // @route   GET /api/donations/mydonations
 exports.getMyDonations = async (req, res) => {
   try {
-    const donations = await Donation.find({ donor: req.user._-id });
+    const donations = await Donation.find({ donor: req.user._id });
     res.json(donations);
-  } catch (error) {
+  } catch (error) { 
     res.status(500).json({ message: 'Server Error' });
   }
 };
@@ -96,4 +96,4 @@ exports.updateDonationStatus = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Server Error' });
     }
-};
+};	
