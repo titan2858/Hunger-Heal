@@ -1,25 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import { AuthContext } from '../../context/AuthContext';
-import axios from 'axios';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Card } from '@/components/ui/card';
 
 const PreviousDonationsPage = () => {
-  const [previousDonations, setPreviousDonations] = useState([]);
-  const { user } = useContext(AuthContext);
+  // Get the global donations list from the context
+  const { donations } = useContext(AuthContext);
 
-  useEffect(() => {
-    const fetchDonations = async () => {
-       if (!user) return;
-      try {
-        const config = { headers: { Authorization: `Bearer ${user.token}` } };
-        const { data } = await axios.get('http://localhost:5000/api/donations/mydonations', config);
-        setPreviousDonations(data.filter(d => d.status === 'Collected' || d.status === 'Rejected'));
-      } catch (error) { console.error('Failed to fetch donations', error); }
-    };
-    fetchDonations();
-  }, [user]);
+  // Filter the global list to find previous donations
+  const previousDonations = donations.filter(d => d.status === 'Collected' || d.status === 'Rejected');
 
   return (
     <DashboardLayout>
@@ -34,14 +24,20 @@ const PreviousDonationsPage = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-             {previousDonations.length > 0 ? previousDonations.map(d => (
-              <TableRow key={d._id}>
-                <TableCell>{d.items}</TableCell>
-                <TableCell>{d.status}</TableCell>
-                <TableCell>{new Date(d.createdAt).toLocaleDateString()}</TableCell>
+            {previousDonations.length > 0 ? (
+              previousDonations.map(d => (
+                <TableRow key={d._id}>
+                  <TableCell>{d.items}</TableCell>
+                  <TableCell>{d.status}</TableCell>
+                  <TableCell>{new Date(d.createdAt).toLocaleDateString()}</TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan="3" className="text-center h-24">
+                  No previous donations found.
+                </TableCell>
               </TableRow>
-            )) : (
-              <TableRow><TableCell colSpan="3" className="text-center">No previous donations found.</TableCell></TableRow>
             )}
           </TableBody>
         </Table>

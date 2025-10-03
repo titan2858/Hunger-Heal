@@ -1,25 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import { AuthContext } from '../../context/AuthContext';
-import axios from 'axios';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Card } from '@/components/ui/card';
 
 const PendingDonationsPage = () => {
-  const [pendingDonations, setPendingDonations] = useState([]);
-  const { user } = useContext(AuthContext);
+  // 1. Get the global 'donations' list from the context
+  const { donations } = useContext(AuthContext);
 
-  useEffect(() => {
-    const fetchDonations = async () => {
-      if (!user) return;
-      try {
-        const config = { headers: { Authorization: `Bearer ${user.token}` } };
-        const { data } = await axios.get('http://localhost:5000/api/donations/mydonations', config);
-        setPendingDonations(data.filter(d => d.status === 'Pending' || d.status === 'Assigned'));
-      } catch (error) { console.error('Failed to fetch donations', error); }
-    };
-    fetchDonations();
-  }, [user]);
+  // 2. Filter the global list to find only pending donations
+  const pendingDonations = donations.filter(d => d.status === 'Pending' || d.status === 'Assigned');
 
   return (
     <DashboardLayout>
@@ -34,14 +24,26 @@ const PendingDonationsPage = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {pendingDonations.length > 0 ? pendingDonations.map(d => (
-              <TableRow key={d._id}>
-                <TableCell>{d.items}</TableCell>
-                <TableCell>{d.address}</TableCell>
-                <TableCell>{d.status}</TableCell>
+            {pendingDonations.length > 0 ? (
+              pendingDonations.map(d => (
+                <TableRow key={d._id}>
+                  <TableCell>{d.items}</TableCell>
+                  <TableCell>{d.address}</TableCell>
+                  <TableCell>
+                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                      d.status === 'Pending' ? 'bg-yellow-200 text-yellow-800' : 'bg-blue-200 text-blue-800'
+                    }`}>
+                      {d.status}
+                    </span>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan="3" className="text-center h-24">
+                  No pending donations found.
+                </TableCell>
               </TableRow>
-            )) : (
-              <TableRow><TableCell colSpan="3" className="text-center">No pending donations found.</TableCell></TableRow>
             )}
           </TableBody>
         </Table>

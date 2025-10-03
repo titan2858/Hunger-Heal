@@ -1,39 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import DashboardLayout from '../../layouts/DashboardLayout';
+import { AuthContext } from '../../context/AuthContext';
+import axios from 'axios';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { useContext } from 'react';
-import { AuthContext } from '../../context/AuthContext'; 
-
-// Mock data for the Agent - replace with real data later
-const agentStats = [
-  { title: 'Pending Collections', value: 1, color: 'bg-blue-500' },
-  { title: 'Donations Collected Today', value: 1, color: 'bg-green-500' },
-];
-
-const assignedDonations = [
-  { 
-    id: 'DON001', 
-    donor: 'Yogesh', 
-    address: '123 Anytown, Mumbai', 
-    phone: '9876543210',
-    status: 'Pending Collection' 
-  },
-  // Add more assigned donations here
-];
 
 const AgentDashboard = () => {
-
   const { user } = useContext(AuthContext);
+  const [stats, setStats] = useState([
+    { title: 'Pending Collections', value: 0, color: 'bg-blue-500' },
+    { title: 'Donations Collected Today', value: 0, color: 'bg-green-500' },
+  ]);
+
+  useEffect(() => {
+    const fetchAgentData = async () => {
+      if (!user) return;
+      try {
+        const config = { headers: { Authorization: `Bearer ${user.token}` } };
+        const { data } = await axios.get('http://localhost:5000/api/donations/agent', config);
+
+        // Calculate stats dynamically
+        const pendingCount = data.filter(d => d.status === 'Assigned').length;
+        const collectedCount = data.filter(d => d.status === 'Collected').length; 
+        
+        setStats([
+          { title: 'Pending Collections', value: pendingCount, color: 'bg-blue-500' },
+          { title: 'Donations Collected', value: collectedCount, color: 'bg-green-500' },
+        ]);
+
+      } catch (error) {
+        console.error("Failed to fetch agent data", error);
+      }
+    };
+    fetchAgentData();
+  }, [user]);
+
   return (
     <DashboardLayout>
       <div className="space-y-8">
         <h1 className="text-3xl font-bold">Welcome, {user ? user.fullName : 'Agent'}!</h1>
         
-        {/* Stat Cards */}
+        {/* Stat Cards - Now dynamic */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {agentStats.map((stat) => (
+          {stats.map((stat) => (
             <Card key={stat.title} className="shadow-md hover:shadow-lg transition-shadow">
               <CardHeader className={`flex flex-row items-center justify-between space-y-0 pb-2 text-white ${stat.color}`}>
                 <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
@@ -45,42 +53,8 @@ const AgentDashboard = () => {
           ))}
         </div>
 
-        {/* Assigned Donations Table */}
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Your Assigned Collections</h2>
-          <Card className="shadow-md">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Donation ID</TableHead>
-                  <TableHead>Donor Name</TableHead>
-                  <TableHead>Address</TableHead>
-                  <TableHead>Phone</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {assignedDonations.map((donation) => (
-                  <TableRow key={donation.id}>
-                    <TableCell className="font-medium">{donation.id}</TableCell>
-                    <TableCell>{donation.donor}</TableCell>
-                    <TableCell>{donation.address}</TableCell>
-                    <TableCell>{donation.phone}</TableCell>
-                    <TableCell>
-                      <span className="px-2 py-1 bg-blue-200 text-blue-800 rounded-full text-xs">
-                        {donation.status}
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      <Button size="sm">Mark as Collected</Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Card>
-        </div>
+        {/* The table has been removed */}
+        
       </div>
     </DashboardLayout>
   );

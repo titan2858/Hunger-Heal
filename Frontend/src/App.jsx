@@ -17,6 +17,9 @@ import DonationDetailsPage from './pages/dashboard/DonationDetailsPage';
 import ManageDonationsPage from './pages/dashboard/ManageDonationsPage';
 import ManageUsersPage from './pages/dashboard/ManageUsersPage';
 import ProfilePage from './pages/dashboard/ProfilePage';
+import AboutUsPage from './pages/AboutUsPage';
+import OurMissionPage from './pages/OurMissionPage'; // 1. Import
+import ContactUsPage from './pages/ContactUsPage';
 
 function App() {
   const location = useLocation();
@@ -30,6 +33,9 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/about" element={<AboutUsPage />} />
+          <Route path="/mission" element={<OurMissionPage />} /> {/* 2. Add Route */}
+          <Route path="/contact" element={<ContactUsPage />} />
           <Route path="/dashboard/donor" element={<DonorDashboard />} />
           <Route path="/dashboard/agent" element={<AgentDashboard />} />
           <Route path="/dashboard/admin" element={<AdminDashboard />} /> 

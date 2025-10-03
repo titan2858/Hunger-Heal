@@ -16,7 +16,7 @@ const PreviousCollectionsPage = () => {
       try {
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
         const { data } = await axios.get('http://localhost:5000/api/donations/agent', config);
-        setDonations(data.filter(d => d.status === 'Assigned' || d.status === 'Rejected'));
+        setDonations(data.filter(d => d.status === 'Collected' || d.status === 'Rejected'));
       } catch (error) { console.error('Failed to fetch donations', error); }
     };
     fetchDonations();

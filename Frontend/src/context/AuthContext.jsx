@@ -1,10 +1,11 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [donations, setDonations] = useState([]); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,7 +31,15 @@ export const AuthProvider = ({ children }) => {
         navigate('/dashboard/donor');
     }
   };
-
+const fetchDonations = async (token) => {
+    try {
+      const config = { headers: { Authorization: `Bearer ${token}` } };
+      const { data } = await axios.get('http://localhost:5000/api/donations/mydonations', config);
+      setDonations(data);
+    } catch (error) {
+      console.error("Failed to fetch donations in context", error);
+    }
+  };
   const logout = () => {
     localStorage.removeItem('userInfo');
     setUser(null);
@@ -38,7 +47,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout,donations, fetchDonations}}>
       {children}
     </AuthContext.Provider>
   );

@@ -16,6 +16,7 @@ const DonatePage = () => {
   const [address, setAddress] = useState('');
   const [notes, setNotes] = useState('');
   const { user } = useContext(AuthContext);
+  const { fetchDonations } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,6 +32,7 @@ const DonatePage = () => {
       };
       await axios.post('http://localhost:5000/api/donations', { items, address: fullAddress }, config);
       alert('Donation submitted successfully!');
+      fetchDonations(user.token);
       // Reset form
       setFoodType(''); setQuantity(''); setPickupDate(''); setPickupTime(''); setAddress(''); setNotes('');
     } catch (error) {
