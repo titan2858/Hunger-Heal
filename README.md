@@ -92,8 +92,9 @@ npm run dev
 
 ---
 
-💻 Frontend Setup
-```bash 
+## 💻 Frontend Setup
+
+```bash
 # Open a new terminal (keep backend running) and navigate to the project directory
 cd hungerheal
 
@@ -103,7 +104,8 @@ cd frontend
 # Install dependencies
 npm install
 
-# Create a .env file in the frontend directory and add your OpenCage API key:
+# Create a .env file in the frontend directory and add the following variable:
+# (You can create this manually or using echo commands)
 echo "VITE_OPENCAGE_API_KEY=your_opencage_api_key" >> .env
 
 # Run the frontend development server
