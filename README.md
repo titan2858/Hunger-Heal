@@ -64,9 +64,7 @@ Before you begin, make sure you have:
 
 ---
 
-## ⚙️ Backend Setup
-
-```bash
+⚙️ Backend Setup
 # Clone the repository
 git clone https://github.com/your-username/hungerheal.git
 cd hungerheal
@@ -84,17 +82,12 @@ echo "JWT_SECRET=your_jwt_secret_key" >> .env
 echo "PORT=5000" >> .env
 echo "OPENCAGE_API_KEY=your_opencage_api_key" >> .env
 
-
 # Run the backend server
 npm run dev
 
 # The backend will start on http://localhost:5000
 
----
-
-## 💻 Frontend Setup
-
-```bash
+💻 Frontend Setup
 # Open a new terminal (keep backend running) and navigate to the project directory
 cd hungerheal
 
