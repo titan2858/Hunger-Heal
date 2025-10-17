@@ -1,18 +1,22 @@
-const Donation = require('../models/Donation'); // This line is likely missing or incorrect
+const Donation = require('../models/Donation'); 
 
-// @desc    Create a new donation
-// @route   POST /api/donations
 exports.createDonation = async (req, res) => {
   const { items, address } = req.body;
+  
+  // The file path will be available in req.file
+  const foodImage = req.file ? req.file.path : null; 
+
   try {
     const donation = new Donation({
       items,
       address,
       donor: req.user._id,
+      foodImage, // Add the image path to the new donation
     });
     const createdDonation = await donation.save();
     res.status(201).json(createdDonation);
   } catch (error) {
+    console.error("Error in createDonation:", error);
     res.status(500).json({ message: 'Server Error' });
   }
 };

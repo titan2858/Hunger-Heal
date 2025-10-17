@@ -15,7 +15,8 @@ exports.getAllUsers = async (req, res) => {
 // @route   GET /api/users/agents
 exports.getAgents = async (req, res) => {
     try {
-        const agents = await User.find({ role: 'agent' }).select('fullName');
+        // Now it will send all fields except the password
+        const agents = await User.find({ role: 'agent' }).select('-password'); 
         res.json(agents);
     } catch (error) {
         res.status(500).json({ message: 'Server Error' });

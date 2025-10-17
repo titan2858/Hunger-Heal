@@ -14,6 +14,7 @@ const donationSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  foodImage: { type: String },
   status: {
     type: String,
     enum: ['Pending', 'Accepted', 'Rejected', 'Assigned', 'Collected'],
@@ -21,7 +22,7 @@ const donationSchema = new mongoose.Schema({
   },
   agent: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'User',  
     default: null
   },
 }, { timestamps: true });

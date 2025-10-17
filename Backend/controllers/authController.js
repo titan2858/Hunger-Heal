@@ -9,8 +9,8 @@ const generateToken = (id) => {
   });
 };
 
-// @desc    Register a new user
-// @route   POST /api/auth/signup
+// Register a new user
+
 exports.signup = async (req, res) => {
   const { fullName, email, password, role } = req.body;
 
@@ -22,10 +22,10 @@ exports.signup = async (req, res) => {
     }
 
     const user = await User.create({
-      fullName,
-      email,
-      password,
-      role,
+      fullName:fullName,
+      email:email,
+      password:password,
+      role:role,
     });
 
     if (user) {
