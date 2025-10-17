@@ -90,9 +90,10 @@ npm run dev
 
 # The backend will start on http://localhost:5000
 
-
+---
 
 💻 Frontend Setup
+```bash 
 # Open a new terminal (keep backend running) and navigate to the project directory
 cd hungerheal
 
