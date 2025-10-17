@@ -62,7 +62,7 @@ const Hero = () => {
           animate={{ scale: 1, opacity: 1, transition: { duration: 0.5, delay: 0.7 } }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="bg-purple-600 text-white font-bold py-4 px-8 rounded-full text-lg hover:bg-purple-700 transition-all duration-300 shadow-lg"
+          className="bg-green-600 text-white font-bold py-4 px-8 rounded-lg text-lg hover:bg-green-700 transition-all duration-300 shadow-lg"
         >
           Donate Now
         </motion.button>

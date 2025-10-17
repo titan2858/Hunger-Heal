@@ -20,6 +20,7 @@ import ProfilePage from './pages/dashboard/ProfilePage';
 import AboutUsPage from './pages/AboutUsPage';
 import OurMissionPage from './pages/OurMissionPage'; // 1. Import
 import ContactUsPage from './pages/ContactUsPage';
+import AdminDonationDetails from './pages/dashboard/AdminDonationDetails';
 
 function App() {
   const location = useLocation();
@@ -47,7 +48,9 @@ function App() {
         <Route path="/dashboard/collection/:id" element={<DonationDetailsPage />} />
         <Route path="/dashboard/admin/donations" element={<ManageDonationsPage />} />
         <Route path="/dashboard/admin/users" element={<ManageUsersPage />} />
-        <Route path="/dashboard/profile" element={<ProfilePage />} />{/* 2. Add the new route */}
+        <Route path="/dashboard/profile" element={<ProfilePage />} />
+        <Route path="/dashboard/admin/donation/:id" element={<AdminDonationDetails />} />
+
         </Routes>
       </main>
     </div>

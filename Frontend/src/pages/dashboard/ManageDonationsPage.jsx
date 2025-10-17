@@ -5,9 +5,9 @@ import axios from 'axios';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogTrigger } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Link } from 'react-router-dom'; // Make sure Link is imported
 
 const ManageDonationsPage = () => {
     const [donations, setDonations] = useState([]);
@@ -32,22 +32,12 @@ const ManageDonationsPage = () => {
     useEffect(() => {
         fetchData();
     }, [user]);
-    
-    const handleStatusUpdate = async (id, status) => {
-        try {
-            const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            await axios.put(`http://localhost:5000/api/donations/${id}/status`, { status }, config);
-            fetchData(); // Refresh data after update
-        } catch (error) {
-            console.error("Failed to update status", error);
-        }
-    };
 
     const handleAssignAgent = async (donationId, agentId) => {
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
             await axios.put(`http://localhost:5000/api/donations/${donationId}/assign`, { agentId }, config);
-            fetchData();
+            fetchData(); // Refresh data after assigning
         } catch (error) {
             console.error("Failed to assign agent", error);
         }
@@ -67,31 +57,20 @@ const ManageDonationsPage = () => {
                 {donationsList.map((d) => (
                     <TableRow key={d._id}>
                         <TableCell>{d._id.slice(-6)}</TableCell>
-                        <TableCell>{d.donor.fullName}</TableCell>
+                        <TableCell>{d.donor?.fullName || 'N/A'}</TableCell>
                         <TableCell>{d.items}</TableCell>
                         <TableCell>
                             {tabType === 'pending' && (
-                                <Dialog>
-                                    <DialogTrigger asChild><Button size="sm">Take Action</Button></DialogTrigger>
-                                    <DialogContent>
-                                        <DialogHeader><DialogTitle>Donation Details</DialogTitle></DialogHeader>
-                                        <DialogDescription asChild>
-                                            <div className="space-y-2 text-sm text-muted-foreground">
-                                                <div><strong>Items:</strong> {d.items}</div>
-                                                <div><strong>Address:</strong> {d.address}</div>
-                                                <div><strong>Submitted:</strong> {new Date(d.createdAt).toLocaleString()}</div>
-                                            </div>
-                                        </DialogDescription>
-                                        <DialogFooter>
-                                            <Button variant="destructive" onClick={() => handleStatusUpdate(d._id, 'Rejected')}>Reject</Button>
-                                            <Button onClick={() => handleStatusUpdate(d._id, 'Accepted')}>Accept</Button>
-                                        </DialogFooter>
-                                    </DialogContent>
-                                </Dialog>
+                                // KEY CHANGE: Replaced Dialog with a Link to the details page
+                                <Link to={`/dashboard/admin/donation/${d._id}`}>
+                                    <Button size="sm">View Details</Button>
+                                </Link>
                             )}
                             {tabType === 'accepted' && (
                                 <Select onValueChange={(agentId) => handleAssignAgent(d._id, agentId)}>
-                                    <SelectTrigger><SelectValue placeholder="Assign Agent" /></SelectTrigger>
+                                    <SelectTrigger className="w-[180px]">
+                                        <SelectValue placeholder="Assign Agent" />
+                                    </SelectTrigger>
                                     <SelectContent>
                                         {agents.map(agent => (
                                             <SelectItem key={agent._id} value={agent._id}>{agent.fullName}</SelectItem>
@@ -122,7 +101,10 @@ const ManageDonationsPage = () => {
                     <Card>{renderDonationsTable(donations.filter(d => d.status === 'Accepted'), 'accepted')}</Card>
                 </TabsContent>
                 <TabsContent value="inProgress">
-                    <Card>{/* Table for 'Assigned' and 'Collected' donations can go here */}</Card>
+                    <Card>
+                        {/* You can render a table for Assigned/Collected donations here */}
+                        <div className="p-6 text-center text-gray-500">In Progress donations will appear here.</div>
+                    </Card>
                 </TabsContent>
             </Tabs>
         </DashboardLayout>

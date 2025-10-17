@@ -8,24 +8,26 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 const ManageUsersPage = () => {
+    // 1. State to hold the list of agents fetched from the API
     const [agents, setAgents] = useState([]);
     const { user } = useContext(AuthContext);
 
+    // 2. Fetch agents when the component loads
     useEffect(() => {
         const fetchAgents = async () => {
             if (!user) return;
             try {
-                // Fetch only agents now
                 const config = { headers: { Authorization: `Bearer ${user.token}` } };
                 const { data } = await axios.get('http://localhost:5000/api/users/agents', config);
                 setAgents(data);
+
             } catch (error) {
                 console.error("Failed to fetch agents", error);
             }
         };
         fetchAgents();
     }, [user]);
-
+    
     return (
         <DashboardLayout>
             <h1 className="text-3xl font-bold mb-6">Manage Agents</h1>
@@ -39,6 +41,7 @@ const ManageUsersPage = () => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
+                        {/* 3. Map over the dynamic 'agents' state */}
                         {agents.map(agent => (
                             <TableRow key={agent._id}>
                                 <TableCell>{agent.fullName}</TableCell>
