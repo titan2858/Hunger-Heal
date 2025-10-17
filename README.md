@@ -84,7 +84,28 @@ echo "JWT_SECRET=your_jwt_secret_key" >> .env
 echo "PORT=5000" >> .env
 echo "OPENCAGE_API_KEY=your_opencage_api_key" >> .env
 
+
 # Run the backend server
 npm run dev
 
 # The backend will start on http://localhost:5000
+
+
+
+💻 Frontend Setup
+# Open a new terminal (keep backend running) and navigate to the project directory
+cd hungerheal
+
+# Navigate to the frontend folder
+cd frontend
+
+# Install dependencies
+npm install
+
+# Create a .env file in the frontend directory and add your OpenCage API key:
+echo "VITE_OPENCAGE_API_KEY=your_opencage_api_key" >> .env
+
+# Run the frontend development server
+npm run dev
+
+# The frontend will start on http://localhost:5173
