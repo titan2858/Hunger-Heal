@@ -64,10 +64,16 @@ Before you begin, make sure you have:
 
 ---
 
-⚙️ Backend Setup
+## ⚙️ Backend & Frontend Setup
+
+```bash
 # Clone the repository
 git clone https://github.com/your-username/hungerheal.git
 cd hungerheal
+
+# ============================
+# BACKEND SETUP
+# ============================
 
 # Navigate to the backend folder
 cd backend
@@ -87,18 +93,17 @@ npm run dev
 
 # The backend will start on http://localhost:5000
 
-💻 Frontend Setup
-# Open a new terminal (keep backend running) and navigate to the project directory
-cd hungerheal
+# ============================
+# FRONTEND SETUP
+# ============================
 
-# Navigate to the frontend folder
-cd frontend
+# Open a new terminal (keep backend running) and navigate to the project directory
+cd ../frontend
 
 # Install dependencies
 npm install
 
-# Create a .env file in the frontend directory and add the following variable:
-# (You can create this manually or using echo commands)
+# Create a .env file in the frontend directory and add:
 echo "VITE_OPENCAGE_API_KEY=your_opencage_api_key" >> .env
 
 # Run the frontend development server
