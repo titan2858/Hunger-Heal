@@ -51,14 +51,14 @@ const ContactUsPage = () => {
                 <div className="bg-green-100 text-green-600 p-3 rounded-full"><Mail /></div>
                 <div>
                   <h3 className="text-xl font-semibold">Email Us</h3>
-                  <p className="text-gray-500">contact@hungerheal.org</p>
+                  <p className="text-gray-500">bankapurhrishikesh@gmail.com</p>
                 </div>
               </div>
                <div className="flex items-start space-x-4">
                 <div className="bg-green-100 text-green-600 p-3 rounded-full"><Phone /></div>
                 <div>
                   <h3 className="text-xl font-semibold">Call Us</h3>
-                  <p className="text-gray-500">+91 987 654 3210</p>
+                  <p className="text-gray-500">+91 9356602089</p>
                 </div>
               </div>
             </motion.div>
